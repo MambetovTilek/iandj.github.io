@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .slider-container {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .slider {
+            white-space: nowrap;
+            transition: transform 1s ease-in-out;
+            font-size: 0;
+        }
+
+        .slider img {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .slider-button {
+            
+            cursor: pointer;
+            font-size: 24px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            
+        }
+
+        .prev {
+            left: 20px;
+        }
+
+        .next {
+            right: 20px;
+        }
+
+        .controls-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+        }
+
+        .timer-container {
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding:5px
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            margin:0 10px; 
+          width:110px
+        }
+
+        .timer {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <div class="slider">
+            <img src="imgs/1.jpg" alt="Image 1">
+            <img src="imgs/2.jpg" alt="Image 2">
+            <img src="imgs/3.jpg" alt="Image 3">
+            <img src="imgs/4.jpg" alt="Image 4">
+            <img src="imgs/5.jpg" alt="Image 5">
+            <img src="imgs/6.jpg" alt="Image 6">
+            <img src="imgs/7.jpg" alt="Image 7">
+            <img src="imgs/8.jpg" alt="Image 8">
+            <img src="imgs/9.jpg" alt="Image 9">
+            <img src="imgs/10.jpg" alt="Image 10">
+            <!-- Добавьте URL-ы к остальным 10 изображениям по аналогии -->
+        </div>
+    </div>
+
+    <div class="controls-container">
+        <button class="slider-button prev" onclick="prevSlide()"><</button>
+        <div class="timer-container">
+            <div id="timer" class="timer">0 секунд</div>
+        </div>
+        <button class="slider-button next" onclick="nextSlide()">></button>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+        const slides = document.querySelectorAll('.slider img');
+        const slider = document.querySelector('.slider');
+
+        function showSlide(index) {
+            if (index < 0) {
+                currentIndex = slides.length - 1;
+            } else if (index >= slides.length) {
+                currentIndex = 0;
+            }
+
+            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        function prevSlide() {
+            currentIndex--;
+            showSlide(currentIndex);
+        }
+
+        function nextSlide() {
+            currentIndex++;
+            showSlide(currentIndex);
+        }
+
+        showSlide(currentIndex);
+
+        const startDate = new Date("2010.11.31");
+        const timerElement = document.getElementById("timer");
+
+        function updateTimer() {
+            const now = new Date();
+            const timePassed = now - startDate;
+            const secondsPassed = Math.floor(timePassed / 1000);
+
+            const years = Math.floor(secondsPassed / (60 * 60 * 24 * 365));
+            const days = Math.floor((secondsPassed % (60 * 60 * 24 * 365)) / (60 * 60 * 24));
+            const hours = Math.floor((secondsPassed % (60 * 60 * 24)) / (60 * 60));
+            const minutes = Math.floor((secondsPassed % (60 * 60)) / 60);
+            const seconds = secondsPassed % 60;
+
+            let timerText = '';
+            if (years > 0) {
+                timerText += `${years} лет<br>`;
+            }
+            if (days > 0) {
+                timerText += `${days} дней<br>`;
+            }
+            if (hours > 0) {
+                timerText += `${hours} часов<br>`;
+            }
+            if (minutes > 0) {
+                timerText += `${minutes} минут<br>`;
+            }
+            if (seconds > 0 || timerText === '') {
+                timerText += `${seconds} секунд`;
+            }
+
+            timerElement.innerHTML = timerText;
+        }
+
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>
